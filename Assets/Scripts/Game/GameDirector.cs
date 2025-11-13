@@ -88,6 +88,12 @@ public class GameDirector : MonoBehaviour
     [SerializeField]
     public TestChangeEvent testChanged = new TestChangeEvent();
 
+    [SerializeField]
+    private GameObject resultsPanel;
+
+    [SerializeField]
+    private Canvas Canvas;
+
     private Dictionary<string, float> difficultySettings;
     private Coroutine spawnTimer;
     private float currentGameTimeLeft;
@@ -101,6 +107,7 @@ public class GameDirector : MonoBehaviour
     private int participantId = 0;
     private int testId = 0;
     private Pointer[] allPointers;
+
 
     private Dictionary<string, Dictionary<string, float>> difficulties = new Dictionary<string, Dictionary<string, float>>(){
         {"Slow", new Dictionary<string, float>(){
@@ -196,8 +203,9 @@ public class GameDirector : MonoBehaviour
     public void StartGame()
     {
         //constraint.SetReset();
-
+        TestStatsRecorder.LoadHistory();
         if (gameState == GameState.Playing) return;
+        TestStatsRecorder.StartSession();
         LoadDifficulty();
         modifiersManager.LogState();
 
@@ -257,6 +265,8 @@ public class GameDirector : MonoBehaviour
         });
         ResetPointerShootOrder();
         ResetMoleSpawnOrder();
+        TestStatsRecorder.PrintSummary();
+        TestStatsRecorder.AppendSessionToHistory();
         FinishGame();
     }
 
@@ -535,12 +545,15 @@ public class GameDirector : MonoBehaviour
         {
             {"GameState", System.Enum.GetName(typeof(GameDirector.GameState), gameState)}
         });
-        FinishGame();
+        TestStatsRecorder.PrintSummary();
+        TestStatsRecorder.AppendSessionToHistory();
+            FinishGame();
+        }
+
+        void OnApplicationQuit()
+        {
+            gazeRecorder.StopRecording();
+        }
+
     }
 
-    void OnApplicationQuit()
-    {
-        gazeRecorder.StopRecording();
-    }
-
-}
