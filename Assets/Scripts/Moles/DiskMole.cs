@@ -420,7 +420,7 @@ public static class TestStatsRecorder
             Debug.LogWarning("[TestStatsRecorder] SaveHistory error: " + ex.Message);
         }
     }
-    // -------------------------------------------------------------------------------
+
     public static void AppendSessionToHistory()
     {
         try
@@ -455,8 +455,22 @@ public static class TestStatsRecorder
             Debug.LogWarning("[TestStatsRecorder] AppendSessionToHistory error: " + ex.Message);
         }
     }
+    public static SessionSummary[] GetRecentSummaries(int maxEntries)
+    {
+        if (sessionHistory == null || sessionHistory.Count == 0)
+            return new SessionSummary[0];
 
+        int take = maxEntries < sessionHistory.Count ? maxEntries : sessionHistory.Count;
+        SessionSummary[] result = new SessionSummary[take];
+        int start = sessionHistory.Count - take;
+        for (int i = 0; i < take; i++)
+        {
+            result[i] = sessionHistory[start + i];
+        }
+        return result;
+    }
 
+   
     // store spawn times so we can compute reaction times
     private static Dictionary<string, float> spawnTimes = new Dictionary<string, float>();
 

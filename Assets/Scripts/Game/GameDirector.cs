@@ -29,6 +29,10 @@ public class CalibrationEventTuple
 {
     [SerializeField] public string type;
     [SerializeField] public CalibrationEvent calibrationEvent;
+   
+  
+
+
 }
 
 
@@ -267,7 +271,9 @@ public class GameDirector : MonoBehaviour
         ResetMoleSpawnOrder();
         TestStatsRecorder.PrintSummary();
         TestStatsRecorder.AppendSessionToHistory();
+        ShowResultsPanel();    
         FinishGame();
+
     }
 
     // Pauses/unpauses the game.
@@ -547,13 +553,48 @@ public class GameDirector : MonoBehaviour
         });
         TestStatsRecorder.PrintSummary();
         TestStatsRecorder.AppendSessionToHistory();
-            FinishGame();
+        ShowResultsPanel();
+        FinishGame();
         }
 
         void OnApplicationQuit()
         {
             gazeRecorder.StopRecording();
         }
+    private void ShowResultsPanel()
+    {
+        // Fix CanvasGroup alpha on the Canvas only
+        CanvasGroup cg = Canvas.GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            cg.alpha = 1f;
+            cg.gameObject.SetActive(true);  // activates the CanvasGroup object
+        }
 
+        // DO NOT enable the whole Canvas!
+        // We only show the resultsPopup.
+
+        if (resultsPanel != null)
+        {
+            resultsPanel.SetActive(true);
+
+            StatsPanel panel = resultsPanel.GetComponent<StatsPanel>();
+            if (panel != null)
+            {
+                panel.Show();
+            }
+            else
+            {
+                Debug.LogWarning("ResultsPanel has no StatsPanel component attached.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Results Panel reference is missing in GameDirector.");
+        }
     }
+
+
+
+}
 
