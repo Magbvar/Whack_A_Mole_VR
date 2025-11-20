@@ -29,6 +29,10 @@ public class CalibrationEventTuple
 {
     [SerializeField] public string type;
     [SerializeField] public CalibrationEvent calibrationEvent;
+   
+  
+
+
 }
 
 
@@ -88,6 +92,12 @@ public class GameDirector : MonoBehaviour
     [SerializeField]
     public TestChangeEvent testChanged = new TestChangeEvent();
 
+    [SerializeField]
+    private GameObject resultsPanel;
+
+    [SerializeField]
+    private Canvas Canvas;
+
     private Dictionary<string, float> difficultySettings;
     private Coroutine spawnTimer;
     private float currentGameTimeLeft;
@@ -101,6 +111,7 @@ public class GameDirector : MonoBehaviour
     private int participantId = 0;
     private int testId = 0;
     private Pointer[] allPointers;
+
 
     private Dictionary<string, Dictionary<string, float>> difficulties = new Dictionary<string, Dictionary<string, float>>(){
         {"Slow", new Dictionary<string, float>(){
@@ -196,8 +207,9 @@ public class GameDirector : MonoBehaviour
     public void StartGame()
     {
         //constraint.SetReset();
-
+        TestStatsRecorder.LoadHistory();
         if (gameState == GameState.Playing) return;
+        TestStatsRecorder.StartSession();
         LoadDifficulty();
         modifiersManager.LogState();
 
@@ -257,7 +269,11 @@ public class GameDirector : MonoBehaviour
         });
         ResetPointerShootOrder();
         ResetMoleSpawnOrder();
+        TestStatsRecorder.PrintSummary();
+        TestStatsRecorder.AppendSessionToHistory();
+        ShowResultsPanel();    
         FinishGame();
+
     }
 
     // Pauses/unpauses the game.
@@ -535,12 +551,50 @@ public class GameDirector : MonoBehaviour
         {
             {"GameState", System.Enum.GetName(typeof(GameDirector.GameState), gameState)}
         });
+        TestStatsRecorder.PrintSummary();
+        TestStatsRecorder.AppendSessionToHistory();
+        ShowResultsPanel();
         FinishGame();
+        }
+
+        void OnApplicationQuit()
+        {
+            gazeRecorder.StopRecording();
+        }
+    private void ShowResultsPanel()
+    {
+        // Fix CanvasGroup alpha on the Canvas only
+        CanvasGroup cg = Canvas.GetComponent<CanvasGroup>();
+        if (cg != null)
+        {
+            cg.alpha = 1f;
+            cg.gameObject.SetActive(true);  // activates the CanvasGroup object
+        }
+
+        // DO NOT enable the whole Canvas!
+        // We only show the resultsPopup.
+
+        if (resultsPanel != null)
+        {
+            resultsPanel.SetActive(true);
+
+            StatsPanel panel = resultsPanel.GetComponent<StatsPanel>();
+            if (panel != null)
+            {
+                panel.Show();
+            }
+            else
+            {
+                Debug.LogWarning("ResultsPanel has no StatsPanel component attached.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Results Panel reference is missing in GameDirector.");
+        }
     }
 
-    void OnApplicationQuit()
-    {
-        gazeRecorder.StopRecording();
-    }
+
 
 }
+
