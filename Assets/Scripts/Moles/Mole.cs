@@ -13,6 +13,8 @@ Facilitates the creation of moles with different behaviours on specific events
 
 public abstract class Mole : MonoBehaviour
 {
+    //NEW
+    [SerializeField] protected HapticsOnMolePop haptics;
     public enum MolePopAnswer { Ok, Fake, Expired, Disabled, Paused }
     public enum MoleOutcome { Valid, Distractor } // Node: if a third option is added, revise every condition in Mole.cs, childs and classes that use it (e.g. PaternInterface.cs, etc.)
     public enum MoleType { SimpleTarget, BallMole, DistractorLeft, DistractorRight, GestureMole, Invisible, BalloonMole, WaspMole } // ALWAYS add new types at the end of the enum to keep compatibility with previous versions. Related to witch prefab is used. (Look at TargetSpawner.cs prefab list)
@@ -323,9 +325,20 @@ public abstract class Mole : MonoBehaviour
         yield break;
     }
 
+    //NEW
+    protected virtual void Awake()
+    {
+        if (haptics == null)
+            haptics = FindObjectOfType<HapticsOnMolePop>();
+    }
+
     protected virtual IEnumerator PlayPopping()
     {
         ChangeState(States.Popped);
+
+        //NEW
+        haptics?.OnMolePop();
+
         yield break;
     }
 
