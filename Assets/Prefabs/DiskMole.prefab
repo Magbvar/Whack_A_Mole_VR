@@ -5349,7 +5349,7 @@ MonoBehaviour:
     type: 3}
   enableSound: {fileID: 0}
   disableSound: {fileID: 0}
-  popSound: {fileID: 0}
+  popSound: {fileID: 8300000, guid: cc637485389dd1f428dd4966a603e1db, type: 3}
   popVisual: {fileID: 6303381341891836782}
   loadingImg: {fileID: 4110767010223219073}
   hoverInfoContainer: {fileID: 6515406651748915805}
