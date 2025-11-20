@@ -17,6 +17,7 @@ public class LoggerNotifier : UnityEngine.Object
     private Dictionary<string, string> eventsHeadersDefaults;
     private Dictionary<string, string> persistentEventsHeadersDefaults;
     private UpdateLogEvent updateEvent = new UpdateLogEvent();
+    public UpdateLogEvent OnEvent => updateEvent;
 
     // The class needs specific initialization. To initialize it, it is necessary to specify the Event and PersistentEvent parameters' names that will be passed through the events, as well as their default
     // values (that will be used if, when raising the event, no value is given for the parameter). It is also possible to pass a function that will be called whan raising an event to update parameters

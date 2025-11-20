@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 /*
 Class dedicated to gather logs, organize, format and save them.
@@ -21,6 +22,9 @@ Before saving, the Event are stored in the logs Dictionary as following: Diction
                                                                                                                    is referenced    for the given row
 */
 
+[System.Serializable]
+public class EventLogged : UnityEvent<Dictionary<string, object>> { }
+
 public class EventLogger : MonoBehaviour
 {
     public enum EventType { MoleEvent, WallEvent, GameEvent, ModifierEvent, PointerEvent, DefaultEvent }
@@ -31,7 +35,7 @@ public class EventLogger : MonoBehaviour
     private float previousEventTime = -1;
     private TrackerHub trackerHub;
     private Dictionary<string, object> persistentLog = new Dictionary<string, object>();
-    private Dictionary<string, object> currentMoleLog = new Dictionary<string, object>();
+    public Dictionary<string, object> currentMoleLog = new Dictionary<string, object>();
     private Dictionary<string, Dictionary<int, string>> logs = new Dictionary<string, Dictionary<int, string>>();
     private Dictionary<string, string> defaultValues = new Dictionary<string, string>();
     private int logCount = 0;
@@ -40,7 +44,7 @@ public class EventLogger : MonoBehaviour
     private WallStateTracker wallStateTracker;
     private string gameId = "NULL";
 
-
+    public EventLogged OnEventLogged = new EventLogged();
     // On start, init the logs with the mandatory columns.
     void Awake()
     {
@@ -113,7 +117,7 @@ public class EventLogger : MonoBehaviour
     }
 
     // Function to log an Event. Checks the descriptor to do certains actions if needed (save the logs on Game Stopped or Game Finished for example).
-    private void LogEvent(Dictionary<string, object> datas)
+    public void LogEvent(Dictionary<string, object> datas)
     {
         switch (datas["Event"])
         {
@@ -146,6 +150,9 @@ public class EventLogger : MonoBehaviour
                 SaveEventDatas(datas, true, true);
                 break;
             case "Mole Hit":
+                UpdateCurrentMoleLog(datas);
+                SaveEventDatas(datas, true, true);
+                break;
             case "Mole Expired":
                 UpdateCurrentMoleLog(datas);
                 SaveEventDatas(datas, true, true);
@@ -170,6 +177,7 @@ public class EventLogger : MonoBehaviour
                 SaveEventDatas(datas);
                 break;
         }
+        OnEventLogged.Invoke(datas);
     }
 
     // Function to log PersistentEvents.
@@ -204,7 +212,7 @@ public class EventLogger : MonoBehaviour
     }
 
     // Update of the "Current Mole" log, called when a new Mole is activated (see LogEvent function)
-    private void UpdateCurrentMoleLog(Dictionary<string, object> datas)
+    public void UpdateCurrentMoleLog(Dictionary<string, object> datas)
     {
         currentMoleLog["CurrentMoleToHitId"] = datas["MoleId"];
         currentMoleLog["CurrentMoleToHitIndexX"] = datas["MoleIndexX"];
@@ -470,4 +478,5 @@ public class EventLogger : MonoBehaviour
     //     logCount = 0;
     //     GenerateUid();
     // }
+
 }
