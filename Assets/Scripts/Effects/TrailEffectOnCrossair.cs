@@ -8,12 +8,12 @@ public class TrailEffectOnCrossair : MonoBehaviour
     public EventLogger eventLogger;     // Assign in inspector
 
     [Header("Hit Speed Settings")]
-    public float maxHitTime = 1f;      // Slowest hit to consider
+    public float maxHitTime = 5f;      // Slowest hit to consider
     public float minParticleSize = 0.1f;
     public float maxParticleSize = 0.5f;
     public float minEmissionRate = 6f;
     public float maxEmissionRate = 20f;
-    public Gradient hitSpeedColorGradient; // Optional: color changes based on hit speed
+    public Gradient hitSpeedColorGradient;
 
     void OnEnable()
     {
@@ -31,7 +31,7 @@ public class TrailEffectOnCrossair : MonoBehaviour
         if (evt == "Mole Hit")
         {
             // Calculate hit speed
-            float moleSpawnTime = datas.ContainsKey("MoleSpawnTime") ? (float)datas["MoleSpawnTime"] : Time.time - 0.5f;
+            float moleSpawnTime = datas.ContainsKey("MoleSpawnTime") ? (float)datas["MoleSpawnTime"] : Time.time;
             float hitSpeed = Time.time - moleSpawnTime;
             float normalizedSpeed = Mathf.Clamp01(hitSpeed / maxHitTime); // 0 = fast, 1 = slow
 

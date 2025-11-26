@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038323028039510556}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.05, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3007083312016423539}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &5325263541655202320
 MeshFilter:
@@ -132,6 +132,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8020828847452156888}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -139,7 +140,6 @@ Transform:
   m_Children:
   - {fileID: 7273602864392537163}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7243966047112092341
 MonoBehaviour:
@@ -159,7 +159,7 @@ MonoBehaviour:
       prefab: {fileID: 8304183495515368934, guid: d6649e07bd1040f48ae8eae1202ce693,
         type: 3}
     - moleType: 1
-      prefab: {fileID: 3699052319643461328, guid: 05c945d472c1ad64ea86f32950fffcb4,
+      prefab: {fileID: 8304183495515368934, guid: d6649e07bd1040f48ae8eae1202ce693,
         type: 3}
     - moleType: 2
       prefab: {fileID: 8304183495515368934, guid: d6649e07bd1040f48ae8eae1202ce693,
