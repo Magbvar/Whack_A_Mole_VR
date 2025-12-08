@@ -102,7 +102,7 @@ public class ModifiersManager : MonoBehaviour
     [SerializeField]
     private float hideWallLowestEnd = -1.05f;
     private float hideWallAmount = -1f;
-    ModifiersManager.MotorspaceSize motorspaceSize = ModifiersManager.MotorspaceSize.Large;
+    ModifiersManager.MotorspaceSize motorspaceSize = ModifiersManager.MotorspaceSize.Medium;
     private Embodiment embodiment = Embodiment.Hands;
     private EyePatch eyePatch = EyePatch.None;
     private HideWall hideWall = HideWall.None;
