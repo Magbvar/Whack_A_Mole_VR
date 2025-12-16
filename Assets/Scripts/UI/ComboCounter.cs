@@ -21,20 +21,20 @@ public class ComboCounter : MonoBehaviour
 
     [Header("Font Size Settings")]
     public float baseFontSize = 74f;
-    public float mediumComboFontSize = 86f;   // e.g. at combo >= mediumThreshold
-    public float bigComboFontSize = 100f;      // e.g. at combo >= bigThreshold
+    public float mediumComboFontSize = 86f;   
+    public float bigComboFontSize = 100f;      
     public int mediumThreshold = 5;
     public int bigThreshold = 10;
 
     [Header("Pop Animation Settings")]
     public float popScaleMultiplier = 1.25f;
-    public float popDuration = 0.12f; // time to scale up (and same to scale back)
+    public float popDuration = 0.12f; 
     private Coroutine popRoutine;
     private Vector3 originalScale;
 
     void Start()
     {
-        // Subscribe to GameDirector and EventLogger events
+       
         if (gameDirector != null)
         {
             gameDirector.timeUpdate.AddListener(OnTimeUpdate);
@@ -68,7 +68,7 @@ public class ComboCounter : MonoBehaviour
     {
         if (newState == GameDirector.GameState.Playing)
         {
-            // Reset display if needed
+           
             UpdateDisplay();
         }
     }
